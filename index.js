@@ -4,8 +4,9 @@ const LIMIT = 20;
 const DELAY = 1000;
 
 const app = express()
+app.use(express.static('public'));
 
-const connections = []
+let connections = []
 
 app.get("/date", (req, res, next) => {
   res.setHeader("Content-Type", "text/html; charset=utf-8")

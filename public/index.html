@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <script>
+        fetch('/date')
+            .then(response => {
+                const reader = response.body.getReader();
+                console.log('reader', reader);
+                
+                const read = () => {
+                    // read() returns a promise that resolves when a value has been received
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            console.log('[end]')
+                            // Do something with last chunk of data then exit reader
+                            return;
+                        }
+                        // Otherwise do something here to process current chunk
+    
+                        // Read some more, and call this function again
+                        const decoder = new TextDecoder();
+                        console.log('receieved', decoder.decode(value));
+                        return read();
+                    });
+                }
+                read();
+            })
+            .catch(err => console.log('err', err))
+    </script>
+</body>
+</html>
